@@ -1,0 +1,45 @@
+@isTest
+global Class AccountProcessorTest{
+    private static List<Account> accounts;
+    private static List<Contact> contacts;
+    private static List<Id> ids;
+    
+    private static void setMockdata(){
+        accounts = new List<Account>();
+        contacts = new List<Contact>();
+        ids = new List<id>();
+        Account a1 = new Account();
+        a1.Name = 'json';
+        a1.Number_of_Contacts__c = 0; 
+        // accounts.add(a1);
+        insert (a1);
+        Contact c1= new Contact();
+        Contact c2= new Contact();
+        accounts = [select Id from Account Limit 1];
+        c1.AccountId = accounts[0].Id;
+        c1.AssistantName = 'j1';
+        c1.LastName ='j1';
+        c2.AccountId = accounts[0].Id;
+        c2.AssistantName = 'j2';
+        c2.LastName ='j2';
+        insert c1;
+        insert c2;
+        for(Account ac : [select Id from Account]){
+            ids.add(ac.Id);
+        }
+        System.debug(ids);
+
+    }
+    
+    
+    @IsTest
+    private static void test(){
+        setMockdata();
+        System.debug(ids);
+        Test.startTest();
+        System.debug(ids);
+        AccountProcessor.countContacts(ids);
+        Test.stopTest();
+    }
+
+}
