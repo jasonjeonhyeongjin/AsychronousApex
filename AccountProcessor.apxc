@@ -1,0 +1,20 @@
+global Class AccountProcessor {
+
+    @future
+    public static void countContacts(List<Id> accountIds){
+    
+        list<Account> accounts = [select Id, Number_of_Contacts__c from Account where Id=: accountIds];
+        list<Account> accountsUpdate = new list<Account>(); 
+        System.debug(accounts);
+        
+        for(Account ac:  accounts){
+           ac.Number_of_Contacts__c = [select count() from Contact where AccountId  =:ac.id];
+           accountsUpdate.add(ac);  
+        }
+        
+        update accountsUpdate;
+        System.debug([select Id, Number_of_Contacts__c from Account]);
+    }
+    
+
+}
